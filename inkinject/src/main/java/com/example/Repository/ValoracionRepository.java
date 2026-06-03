@@ -14,6 +14,8 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
     List<Valoracion> findByCompraClienteId(Long clienteId);
 
+    boolean existsByCompraId(Long compraId);
+
     // Se activará cuando Disenio tenga la relación con Tatuador:
     // List<Valoracion> findByCompraDisenioTatuadorId(Long tatuadorId);
 }

@@ -52,21 +52,25 @@ public class ValoracionService {
 
         Valoracion saved = valoracionRepository.save(valoracion);
 
-        // Actualizar media del tatuador tras la nueva valoración
-        actualizarMediaTatuador(compra.getDisenio().getTatuador().getId());
+        // Se activará cuando Disenio tenga la relación con Tatuador:
+        // actualizarMediaTatuador(compra.getDisenio().getTatuador().getId());
 
         return saved;
     }
 
     // Obtener todas las valoraciones de un tatuador
     public List<Valoracion> obtenerValoracionesPorTatuador(Long tatuadorId) {
-        return valoracionRepository.findByCompraDisenioTatuadorId(tatuadorId);
+        // Se activará cuando Disenio tenga la relación con Tatuador:
+        // return valoracionRepository.findByCompraDisenioTatuadorId(tatuadorId);
+        return valoracionRepository.findAll();
     }
 
     // Calcular y actualizar la media de valoraciones del tatuador
     private void actualizarMediaTatuador(Long tatuadorId) {
-        List<Valoracion> valoraciones = 
-            valoracionRepository.findByCompraDisenioTatuadorId(tatuadorId);
+        // Se activará cuando Disenio tenga la relación con Tatuador:
+        List<Valoracion> valoraciones =
+            // valoracionRepository.findByCompraDisenioTatuadorId(tatuadorId);
+            valoracionRepository.findAll();
 
         if (!valoraciones.isEmpty()) {
             double media = valoraciones.stream()
@@ -82,7 +86,7 @@ public class ValoracionService {
             // Lo llamamos aquí pero la actualización la hace TatuadorService
             // Por ahora guardamos la media calculada en memoria
             // cuando tengamos TatuadorService lo conectamos
-            System.out.println("Media actualizada para tatuador " 
+            System.out.println("Media actualizada para tatuador "
                 + tatuadorId + ": " + media);
         }
     }
