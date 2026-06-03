@@ -9,9 +9,7 @@ import java.util.List;
 @Repository
 public interface MensajeRepository extends JpaRepository<Mensaje, Long> {
 
-//  Una vez creada la entidad Actor se descomentarán estos métodos:
-
-//  List<Mensaje> findByEmisorId(Long emisorId);
-//  List<Mensaje> findByReceptorId(Long receptorId);
-//  List<Mensaje> findByEmisorIdOrReceptorId(Long emisorId, Long receptorId);
+    List<Mensaje> findByEmisorId(Long emisorId);
+    List<Mensaje> findByReceptorId(Long receptorId);
+    List<Mensaje> findByEmisorIdOrReceptorId(Long emisorId, Long receptorId);
 }
