@@ -34,13 +34,12 @@ public class Mensaje {
     @Schema(description = "Cuerpo del mensaje", example = "Me gustaría saber más sobre el diseño de dragón")
     private String cuerpo;
 
-//    @ManyToOne
-//    @JoinColumn(name = "emisor_id", nullable = false)
-//    @Schema(description = "Actor que envía el mensaje")
-//    private Actor emisor;
+    @ManyToOne
+    @JoinColumn(name = "emisor_id", nullable = false)
+    @Schema(description = "Actor que envía el mensaje")
+    private Actor emisor;
 
-//    @ManyToOne
-//    @JoinColumn(name = "receptor_id", nullable = false)
-//    @Schema(description = "Actor que recibe el mensaje")
-//    private Actor receptor;
+    @ManyToOne
+    @JoinColumn(name = "receptor_id", nullable = false)
+    private Actor receptor;
 }

@@ -46,10 +46,10 @@ public class Disenio {
     @Schema(description = "Precio del diseño en euros", example = "150.0")
     private Double precio;
 
-//    @ManyToOne
-//    @JoinColumn(name = "tatuador_id", nullable = false)
-//    @Schema(description = "Tatuador que subió el diseño")
-//    private Tatuador tatuador;
+    @ManyToOne
+    @JoinColumn(name = "tatuador_id", nullable = false)
+    @Schema(description = "Tatuador que subió el diseño")
+    private Tatuador tatuador;
 
     @ManyToMany
     @JoinTable(

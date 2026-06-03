@@ -26,7 +26,7 @@ public class Valoracion {
     @JoinColumn(name = "compra_id", nullable = false)
     private Compra compra;
 
-//    @ManyToOne
-//    @JoinColumn(name = "cliente_id", nullable = false)
-//    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 }
