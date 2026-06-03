@@ -27,11 +27,11 @@ public class Compra {
     @Column(nullable = false)
     private Double precio;
 
-//    @ManyToOne
-//    @JoinColumn(name = "cliente_id", nullable = false)
-//    private Cliente cliente;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "disenio_id", nullable = false)
-//    private Disenio disenio;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "disenio_id", nullable = false)
+    private Disenio disenio;
 }

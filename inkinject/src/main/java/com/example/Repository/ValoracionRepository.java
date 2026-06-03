@@ -2,9 +2,18 @@ package com.example.Repository;
 
 import com.example.Entity.Valoracion;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
-    List<Valoracion> findByCompraDisenioTatuadorId(Long tatuadorId);
-    boolean existsByCompraId(Long compraId);
+
+    Optional<Valoracion> findByCompraId(Long compraId);
+
+    List<Valoracion> findByCompraClienteId(Long clienteId);
+
+    // Se activará cuando Disenio tenga la relación con Tatuador:
+    // List<Valoracion> findByCompraDisenioTatuadorId(Long tatuadorId);
 }
