@@ -62,32 +62,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/registro/cliente").permitAll()
                         .requestMatchers(HttpMethod.POST, "/registro/tatuador").permitAll()
                         .requestMatchers(HttpMethod.GET, "/disenios").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/disenios/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/disenios/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/etiquetas").permitAll()
-
-                        // Rutas ADMINISTRADOR
-                        .requestMatchers("/admin/**").hasAuthority("ADMINISTRADOR")
-                        .requestMatchers(HttpMethod.POST, "/etiquetas").hasAuthority("ADMINISTRADOR")
-                        .requestMatchers(HttpMethod.PUT, "/etiquetas/*").hasAuthority("ADMINISTRADOR")
-                        .requestMatchers(HttpMethod.DELETE, "/etiquetas/*").hasAuthority("ADMINISTRADOR")
-
-                        // Rutas TATUADOR
-                        .requestMatchers(HttpMethod.POST, "/disenios").hasAuthority("TATUADOR")
-                        .requestMatchers(HttpMethod.PUT, "/disenios/*").hasAuthority("TATUADOR")
-                        .requestMatchers(HttpMethod.DELETE, "/disenios/*").hasAuthority("TATUADOR")
-
-                        // Rutas CLIENTE
-                        .requestMatchers(HttpMethod.POST, "/compras").hasAuthority("CLIENTE")
-                        .requestMatchers(HttpMethod.POST, "/reclamaciones").hasAuthority("CLIENTE")
-                        .requestMatchers(HttpMethod.POST, "/valoraciones").hasAuthority("CLIENTE")
-
-                        // Rutas mensajes (cualquier actor autenticado)
-                        .requestMatchers("/mensajes/**").authenticated()
-
-                        // Perfil y GDPR
-                        .requestMatchers(HttpMethod.PUT, "/actor/perfil").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/actor/perfil").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/actor/exportar").authenticated()
 
                         // Rutas Swagger
                         .requestMatchers("/v3/api-docs/**").permitAll()

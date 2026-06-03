@@ -2,8 +2,10 @@ package com.example.Service;
 
 import com.example.Entity.Disenio;
 import com.example.Entity.Etiqueta;
+import com.example.Entity.Tatuador;
 import com.example.Repository.DisenioRepository;
 import com.example.Repository.EtiquetaRepository;
+import com.example.Repository.TatuadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class DisenioService {
     @Autowired
     private EtiquetaRepository etiquetaRepository;
 
+    @Autowired
+    private TatuadorRepository tatuadorRepository;
+
     public List<Disenio> findAll() {
         return disenioRepository.findAll();
     }
@@ -39,13 +44,9 @@ public class DisenioService {
     }
 
     public Disenio save(Disenio disenio, String usernameTatuador) {
-        // Cuando exista la entidad Tatuador se validará aquí que
-        // el usuario autenticado es el tatuador que sube el diseño
-        validarTatuadorAutenticado(disenio, usernameTatuador);
-
+        validarYAsignarTatuador(disenio, usernameTatuador);
         disenio.setFechaSubida(LocalDate.now());
 
-        // Resolver etiquetas desde BBDD
         if (disenio.getEtiquetas() != null) {
             Set<Etiqueta> etiquetasResueltas = disenio.getEtiquetas().stream()
                     .map(e -> etiquetaRepository.findById(e.getId())
@@ -59,9 +60,9 @@ public class DisenioService {
 
     public Disenio update(Long id, Disenio disenioActualizado, String usernameTatuador) {
         Disenio disenio = disenioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diseño no encontrado con id: " + id));
+                .orElseThrow(() -> new RuntimeException("Disenio no encontrado con id: " + id));
 
-        validarTatuadorAutenticado(disenio, usernameTatuador);
+        validarYAsignarTatuador(disenio, usernameTatuador);
 
         disenio.setNombre(disenioActualizado.getNombre());
         disenio.setDescripcion(disenioActualizado.getDescripcion());
@@ -81,18 +82,19 @@ public class DisenioService {
 
     public void delete(Long id, String usernameTatuador) {
         Disenio disenio = disenioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Diseño no encontrado con id: " + id));
+                .orElseThrow(() -> new RuntimeException("Disenio no encontrado con id: " + id));
 
-        validarTatuadorAutenticado(disenio, usernameTatuador);
+        validarYAsignarTatuador(disenio, usernameTatuador);
 
         disenioRepository.delete(disenio);
     }
 
-    // Cuando exista Tatuador se completará esta validación comprobando
-    // que disenio.getTatuador().getUsername().equals(usernameTatuador)
-    private void validarTatuadorAutenticado(Disenio disenio, String usernameTatuador) {
+    private void validarYAsignarTatuador(Disenio disenio, String usernameTatuador) {
         if (usernameTatuador == null || usernameTatuador.isBlank()) {
-            throw new RuntimeException("No hay ningún tatuador autenticado");
+            throw new RuntimeException("No hay ningun tatuador autenticado");
         }
+        Tatuador tatuador = tatuadorRepository.findByUsername(usernameTatuador)
+                .orElseThrow(() -> new RuntimeException("Tatuador no encontrado: " + usernameTatuador));
+        disenio.setTatuador(tatuador);
     }
 }

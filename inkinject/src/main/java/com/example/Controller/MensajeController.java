@@ -7,13 +7,12 @@ import com.example.Service.MensajeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/mensajes")
@@ -28,44 +27,31 @@ public class MensajeController {
     private JWTUtils jwtUtils;
 
     @GetMapping("/recibidos")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(
-        summary = "Listar mensajes recibidos",
-        description = "Devuelve los mensajes recibidos por el usuario autenticado"
-    )
+    @Operation(summary = "Listar mensajes recibidos")
     public ResponseEntity<List<Mensaje>> recibidos() {
         Actor actor = jwtUtils.userLogin();
         return ResponseEntity.ok(mensajeService.findByReceptor(actor.getId()));
     }
 
     @GetMapping("/enviados")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(
-        summary = "Listar mensajes enviados",
-        description = "Devuelve los mensajes enviados por el usuario autenticado"
-    )
+    @Operation(summary = "Listar mensajes enviados")
     public ResponseEntity<List<Mensaje>> enviados() {
         Actor actor = jwtUtils.userLogin();
         return ResponseEntity.ok(mensajeService.findByEmisor(actor.getId()));
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
-    @Operation(
-        summary = "Enviar un mensaje",
-        description = "Envia un mensaje al receptor indicado. Solo usuarios autenticados"
-    )
-    public ResponseEntity<Mensaje> send(@Valid @RequestBody Mensaje mensaje) {
+    @Operation(summary = "Enviar un mensaje")
+    public ResponseEntity<Mensaje> send(@RequestBody Map<String, Object> body) {
         Actor actor = jwtUtils.userLogin();
-        return ResponseEntity.ok(mensajeService.send(mensaje, actor.getUsername()));
+        String asunto = (String) body.get("asunto");
+        String cuerpo = (String) body.get("cuerpo");
+        Long receptorId = Long.valueOf(body.get("receptorId").toString());
+        return ResponseEntity.ok(mensajeService.send(asunto, cuerpo, receptorId, actor.getUsername()));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
-    @Operation(
-        summary = "Eliminar un mensaje",
-        description = "Elimina un mensaje. Solo el emisor o receptor pueden eliminarlo"
-    )
+    @Operation(summary = "Eliminar un mensaje")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Actor actor = jwtUtils.userLogin();
         mensajeService.delete(id, actor.getUsername());
